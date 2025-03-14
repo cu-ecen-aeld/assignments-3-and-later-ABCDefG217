@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 int processDirectory(char *path, char *searchStr, size_t *fileCount, size_t *totalLineCount) {
     // path might be a dirpath or a filepath
@@ -70,7 +71,7 @@ int processDirectory(char *path, char *searchStr, size_t *fileCount, size_t *tot
                 continue;
             }
             // construct the full file path
-            char pathBuffer[256];
+            char pathBuffer[PATH_MAX];
             snprintf(pathBuffer, sizeof(pathBuffer), "%s/%s", path, fileName);
 
             // recurse
