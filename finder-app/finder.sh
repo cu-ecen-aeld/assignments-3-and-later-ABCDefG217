@@ -1,21 +1,23 @@
 #!/bin/sh
 
-set -x
-
-filesdir="$1"
-searchstr="$2"
-
-if [ "$#" -ne 2 ]; then
-    echo "filesdir and searchstr are both required"
+if [ $# -ne 2 ]
+then
+    echo "usage: ./finder.sh filesdir searchstr"
     exit 1
 fi
 
-if [[ ! -d "$1" ]]; then
-    echo "$filesdir is not a directory"
+if ! [ -d $1 ]
+then
+    echo "directory '$1' does not exist"
     exit 1
 fi
 
-file_count="$(grep -R -l $searchstr $filesdir | wc -l)"
-line_count="$(grep -R $searchstr $filesdir | wc -l)"
+filesdir=$1
+searchstr=$2
 
-echo "The number of files are $file_count and the number of matching lines are $line_count"
+echo "filesdir=$filesdir searchstr=$searchstr"
+
+total_files=$(find $filesdir -type f -print | wc -l)
+found_files=$(find $filesdir -type f -print | xargs grep -l "$searchstr" | wc -l)
+
+echo "The number of files are $total_files and the number of matching lines are $found_files"
